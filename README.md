@@ -1,4 +1,4 @@
 # go-postgres-example
 
-- Postgres Instance: [Neon Console](https://console.neon.tech/app/projects/royal-fog-31827183/branches/br-sparkling-glitter-b3g2xkxg?database=neondb)
+- Postgres Instance: [Neon Console](https://console.neon.tech/app/projects/winter-rice-15802949/branches/br-calm-heart-b3tkqzbn)
 - Sample Data: [neondatabase/postgres-sample-dbs](https://github.com/neondatabase/postgres-sample-dbs)

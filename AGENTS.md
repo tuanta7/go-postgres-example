@@ -45,10 +45,10 @@ Explore real-world PostgreSQL performance problems rather than build a productio
 
 **Project conventions:**
 
-- `db/migrations` for SQL migrations
-- `db/queries` for sqlc queries
-- `db/seed` for dataset generation
-- `internal/db/sqlc` for generated Go code
+- `data/migrations` for SQL migrations
+- `data/queries` for sqlc queries
+- `data/seed` for dataset generation
+- `internal/repository/queries` for generated Go code
 - `tests/load` for k6 scripts
 - `benchmarks/results` for benchmark outputs
 - `docs` for technical documentation

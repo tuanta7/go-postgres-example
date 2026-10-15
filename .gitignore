@@ -1,4 +1,5 @@
 *.env
 /bin/
+/data/seed/employees.sql
 /benchmarks/results/*
 !/benchmarks/results/README.md

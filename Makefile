@@ -1,10 +1,24 @@
-.PHONY: run-load-test
+.PHONY: install-libpq employees-db run-k6
 
-K6_SCENARIO = tests/load/$(S).test.js
-K6_INSTALLATION_GUIDE_PAGE=https://grafana.com/docs/learning-paths/run-first-k6-test/install-k6/
+-include .env
+export DATABASE_URL
 
-run-load-test:
-	@test -n "$(S)" || { echo "Usage: make run-load-test S=<scenario> (e.g. S=simple-index)" >&2; exit 1; }
+employees-db:
+	brew install libpq wget
+	wget https://raw.githubusercontent.com/neondatabase/postgres-sample-dbs/main/employees.sql.gz
+	pg_restore -d "$$DATABASE_URL" -Fc employees.sql.gz --no-owner --no-privileges
+	rm employees.sql.gz
+
+lego-db:
+	brew install libpq wget
+	wget https://raw.githubusercontent.com/neondatabase/postgres-sample-dbs/main/lego.sql
+	psql -d "$$DATABASE_URL" -f lego.sql
+	rm lego.sql
+
+K6_SCENARIO = tests/load/$(SCENARIO).test.js
+
+run-k6:
+	@test -n "$(SCENARIO)" || { echo "Usage: make run-k6 SCENARIO=<scenario> (e.g. SCENARIO=simple-index)" >&2; exit 1; }
 	@test -f "$(K6_SCENARIO)" || { echo "Scenario not found: $(K6_SCENARIO)" >&2; exit 1; }
-	@command -v k6 >/dev/null 2>&1 || { echo "k6 is required. Install it: $(K6_INSTALLATION_GUIDE_PAGE)" >&2; exit 1; }
+	@command -v k6 >/dev/null 2>&1 || { echo "k6 is required: https://grafana.com/docs/learning-paths/run-first-k6-test/install-k6" >&2; exit 1; }
 	k6 run "$(K6_SCENARIO)"
