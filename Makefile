@@ -9,11 +9,18 @@ employees-db:
 	pg_restore -d "$$DATABASE_URL" -Fc employees.sql.gz --no-owner --no-privileges
 	rm employees.sql.gz
 
+employees-schema:
+	brew install libpq
+	pg_dump "$$DATABASE_URL" --schema-only --schema=employees --no-owner --no-privileges --file=data/schema/employees.sql
+	
 lego-db:
 	brew install libpq wget
 	wget https://raw.githubusercontent.com/neondatabase/postgres-sample-dbs/main/lego.sql
 	psql -d "$$DATABASE_URL" -f lego.sql
 	rm lego.sql
+
+sqlc-gen:
+	docker run --rm -v $(PWD):/src -w /src sqlc/sqlc:1.31.1 generate
 
 K6_SCENARIO = tests/load/$(SCENARIO).test.js
 
