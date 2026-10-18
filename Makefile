@@ -1,7 +1,10 @@
-.PHONY: install-libpq employees-db run-k6
+.PHONY: install-libpq employees-db run-k6 run-reader mockery-gen
 
 -include .env
 export DATABASE_URL
+
+run-reader:
+	go run ./cmd/reader
 
 employees-db:
 	brew install libpq wget
@@ -21,6 +24,9 @@ lego-db:
 
 sqlc-gen:
 	docker run --rm -v $(PWD):/src -w /src sqlc/sqlc:1.31.1 generate
+
+mockery-gen:
+	docker run --rm -e GOTOOLCHAIN=auto -v "$(PWD):/src" -w /src vektra/mockery:v3.7.0 --config .mockery.yml
 
 K6_SCENARIO = tests/load/$(SCENARIO).test.js
 
