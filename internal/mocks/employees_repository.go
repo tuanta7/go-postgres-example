@@ -181,6 +181,74 @@ func (_c *MockEmployeesRepository_ExplainAnalyzeGetEmployeeByID_Call) RunAndRetu
 	return _c
 }
 
+// ExplainAnalyzeSearchEmployees provides a mock function for the type MockEmployeesRepository
+func (_mock *MockEmployeesRepository) ExplainAnalyzeSearchEmployees(context1 context.Context, employee domain.Employee) ([]string, error) {
+	ret := _mock.Called(context1, employee)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ExplainAnalyzeSearchEmployees")
+	}
+
+	var r0 []string
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, domain.Employee) ([]string, error)); ok {
+		return returnFunc(context1, employee)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, domain.Employee) []string); ok {
+		r0 = returnFunc(context1, employee)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]string)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, domain.Employee) error); ok {
+		r1 = returnFunc(context1, employee)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockEmployeesRepository_ExplainAnalyzeSearchEmployees_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ExplainAnalyzeSearchEmployees'
+type MockEmployeesRepository_ExplainAnalyzeSearchEmployees_Call struct {
+	*mock.Call
+}
+
+// ExplainAnalyzeSearchEmployees is a helper method to define mock.On call
+//   - context1 context.Context
+//   - employee domain.Employee
+func (_e *MockEmployeesRepository_Expecter) ExplainAnalyzeSearchEmployees(context1 any, employee any) *MockEmployeesRepository_ExplainAnalyzeSearchEmployees_Call {
+	return &MockEmployeesRepository_ExplainAnalyzeSearchEmployees_Call{Call: _e.mock.On("ExplainAnalyzeSearchEmployees", context1, employee)}
+}
+
+func (_c *MockEmployeesRepository_ExplainAnalyzeSearchEmployees_Call) Run(run func(context1 context.Context, employee domain.Employee)) *MockEmployeesRepository_ExplainAnalyzeSearchEmployees_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 domain.Employee
+		if args[1] != nil {
+			arg1 = args[1].(domain.Employee)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockEmployeesRepository_ExplainAnalyzeSearchEmployees_Call) Return(strings []string, err error) *MockEmployeesRepository_ExplainAnalyzeSearchEmployees_Call {
+	_c.Call.Return(strings, err)
+	return _c
+}
+
+func (_c *MockEmployeesRepository_ExplainAnalyzeSearchEmployees_Call) RunAndReturn(run func(context1 context.Context, employee domain.Employee) ([]string, error)) *MockEmployeesRepository_ExplainAnalyzeSearchEmployees_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ExplainGetEmployeeByID provides a mock function for the type MockEmployeesRepository
 func (_mock *MockEmployeesRepository) ExplainGetEmployeeByID(context1 context.Context, n int64) ([]string, error) {
 	ret := _mock.Called(context1, n)
@@ -249,6 +317,74 @@ func (_c *MockEmployeesRepository_ExplainGetEmployeeByID_Call) RunAndReturn(run 
 	return _c
 }
 
+// ExplainSearchEmployees provides a mock function for the type MockEmployeesRepository
+func (_mock *MockEmployeesRepository) ExplainSearchEmployees(context1 context.Context, employee domain.Employee) ([]string, error) {
+	ret := _mock.Called(context1, employee)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ExplainSearchEmployees")
+	}
+
+	var r0 []string
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, domain.Employee) ([]string, error)); ok {
+		return returnFunc(context1, employee)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, domain.Employee) []string); ok {
+		r0 = returnFunc(context1, employee)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]string)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, domain.Employee) error); ok {
+		r1 = returnFunc(context1, employee)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockEmployeesRepository_ExplainSearchEmployees_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ExplainSearchEmployees'
+type MockEmployeesRepository_ExplainSearchEmployees_Call struct {
+	*mock.Call
+}
+
+// ExplainSearchEmployees is a helper method to define mock.On call
+//   - context1 context.Context
+//   - employee domain.Employee
+func (_e *MockEmployeesRepository_Expecter) ExplainSearchEmployees(context1 any, employee any) *MockEmployeesRepository_ExplainSearchEmployees_Call {
+	return &MockEmployeesRepository_ExplainSearchEmployees_Call{Call: _e.mock.On("ExplainSearchEmployees", context1, employee)}
+}
+
+func (_c *MockEmployeesRepository_ExplainSearchEmployees_Call) Run(run func(context1 context.Context, employee domain.Employee)) *MockEmployeesRepository_ExplainSearchEmployees_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 domain.Employee
+		if args[1] != nil {
+			arg1 = args[1].(domain.Employee)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockEmployeesRepository_ExplainSearchEmployees_Call) Return(strings []string, err error) *MockEmployeesRepository_ExplainSearchEmployees_Call {
+	_c.Call.Return(strings, err)
+	return _c
+}
+
+func (_c *MockEmployeesRepository_ExplainSearchEmployees_Call) RunAndReturn(run func(context1 context.Context, employee domain.Employee) ([]string, error)) *MockEmployeesRepository_ExplainSearchEmployees_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // GetEmployeeByID provides a mock function for the type MockEmployeesRepository
 func (_mock *MockEmployeesRepository) GetEmployeeByID(context1 context.Context, n int64) (domain.Employee, error) {
 	ret := _mock.Called(context1, n)
@@ -311,6 +447,74 @@ func (_c *MockEmployeesRepository_GetEmployeeByID_Call) Return(employee domain.E
 }
 
 func (_c *MockEmployeesRepository_GetEmployeeByID_Call) RunAndReturn(run func(context1 context.Context, n int64) (domain.Employee, error)) *MockEmployeesRepository_GetEmployeeByID_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// SearchEmployees provides a mock function for the type MockEmployeesRepository
+func (_mock *MockEmployeesRepository) SearchEmployees(context1 context.Context, employee domain.Employee) ([]domain.Employee, error) {
+	ret := _mock.Called(context1, employee)
+
+	if len(ret) == 0 {
+		panic("no return value specified for SearchEmployees")
+	}
+
+	var r0 []domain.Employee
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, domain.Employee) ([]domain.Employee, error)); ok {
+		return returnFunc(context1, employee)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, domain.Employee) []domain.Employee); ok {
+		r0 = returnFunc(context1, employee)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]domain.Employee)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, domain.Employee) error); ok {
+		r1 = returnFunc(context1, employee)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockEmployeesRepository_SearchEmployees_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'SearchEmployees'
+type MockEmployeesRepository_SearchEmployees_Call struct {
+	*mock.Call
+}
+
+// SearchEmployees is a helper method to define mock.On call
+//   - context1 context.Context
+//   - employee domain.Employee
+func (_e *MockEmployeesRepository_Expecter) SearchEmployees(context1 any, employee any) *MockEmployeesRepository_SearchEmployees_Call {
+	return &MockEmployeesRepository_SearchEmployees_Call{Call: _e.mock.On("SearchEmployees", context1, employee)}
+}
+
+func (_c *MockEmployeesRepository_SearchEmployees_Call) Run(run func(context1 context.Context, employee domain.Employee)) *MockEmployeesRepository_SearchEmployees_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 domain.Employee
+		if args[1] != nil {
+			arg1 = args[1].(domain.Employee)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockEmployeesRepository_SearchEmployees_Call) Return(employees []domain.Employee, err error) *MockEmployeesRepository_SearchEmployees_Call {
+	_c.Call.Return(employees, err)
+	return _c
+}
+
+func (_c *MockEmployeesRepository_SearchEmployees_Call) RunAndReturn(run func(context1 context.Context, employee domain.Employee) ([]domain.Employee, error)) *MockEmployeesRepository_SearchEmployees_Call {
 	_c.Call.Return(run)
 	return _c
 }

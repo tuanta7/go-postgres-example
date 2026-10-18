@@ -3,12 +3,12 @@ package rest
 import (
 	"context"
 	"errors"
-	"strconv"
 	"time"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/timeout"
 	"github.com/jackc/pgx/v5"
+	"github.com/tuanta7/go-postgres-example/internal/domain"
 	"github.com/tuanta7/go-postgres-example/internal/scenarios/index"
 )
 
@@ -34,6 +34,11 @@ func (h *EmployeeHandler) RegisterReadRoutes(g fiber.Router) {
 			return fiber.NewError(fiber.StatusGatewayTimeout, "request timed out")
 		},
 	}
+
+	group.Get("/search", timeout.New(h.SearchEmployees, cfg))
+	group.Get("/search/explain", timeout.New(h.ExplainSearchEmployees, cfg))
+	group.Get("/search/explain-analyze", timeout.New(h.ExplainAnalyzeSearchEmployees, cfg))
+
 	group.Get("/:id", timeout.New(h.GetEmployeeByID, cfg))
 	group.Get("/:id/count", timeout.New(h.CountEmployeesByID, cfg))
 	group.Get("/:id/explain", timeout.New(h.ExplainGetEmployeeByID, cfg))
@@ -50,14 +55,7 @@ func (h *EmployeeHandler) GetEmployeeByID(c fiber.Ctx) error {
 	if err != nil {
 		return employeeError(c, err)
 	}
-	return c.JSON(fiber.Map{
-		"id":         employee.ID,
-		"first_name": employee.FirstName,
-		"last_name":  employee.LastName,
-		"birth_date": employee.BirthDate.Format("2006-01-02"),
-		"hire_date":  employee.HireDate.Format("2006-01-02"),
-		"gender":     employee.Gender,
-	})
+	return c.JSON(employeeResponse(employee))
 }
 
 func (h *EmployeeHandler) CountEmployeesByID(c fiber.Ctx) error {
@@ -84,7 +82,6 @@ func (h *EmployeeHandler) ExplainGetEmployeeByID(c fiber.Ctx) error {
 	if err != nil {
 		return employeeError(c, err)
 	}
-
 	return c.JSON(fiber.Map{"employee_id": id, "plan": plan})
 }
 
@@ -102,12 +99,27 @@ func (h *EmployeeHandler) ExplainAnalyzeGetEmployeeByID(c fiber.Ctx) error {
 	return c.JSON(fiber.Map{"employee_id": id, "plan": plan})
 }
 
+type employeeIDRequest struct {
+	ID int64 `uri:"id" validate:"gt=0"`
+}
+
 func employeeID(c fiber.Ctx) (int64, error) {
-	id, err := strconv.ParseInt(c.Params("id"), 10, 64)
-	if err != nil || id <= 0 {
+	var request employeeIDRequest
+	if err := c.Bind().URI(&request); err != nil {
 		return 0, fiber.NewError(fiber.StatusBadRequest, "employee id must be a positive integer")
 	}
-	return id, nil
+	return request.ID, nil
+}
+
+func employeeResponse(employee domain.Employee) fiber.Map {
+	return fiber.Map{
+		"id":         employee.ID,
+		"first_name": employee.FirstName,
+		"last_name":  employee.LastName,
+		"birth_date": employee.BirthDate.Format("2006-01-02"),
+		"hire_date":  employee.HireDate.Format("2006-01-02"),
+		"gender":     employee.Gender,
+	}
 }
 
 func employeeError(c fiber.Ctx, err error) error {

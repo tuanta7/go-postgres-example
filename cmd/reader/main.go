@@ -11,11 +11,11 @@ import (
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/tuanta7/go-postgres-example/internal/api"
 	"github.com/tuanta7/go-postgres-example/internal/api/rest"
 	"github.com/tuanta7/go-postgres-example/internal/repository"
 	"github.com/tuanta7/go-postgres-example/internal/scenarios/index"
 	"github.com/tuanta7/go-postgres-example/pkg/otelx"
-	"go.uber.org/zap"
 )
 
 func main() {
@@ -30,8 +30,10 @@ func run() error {
 	if err != nil {
 		return err
 	}
+
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
+
 	logger := otelx.NewLogger()
 	defer logger.Sync()
 
@@ -47,24 +49,28 @@ func run() error {
 	}
 	cancel()
 
-	app := fiber.New(fiber.Config{
-		ErrorHandler: func(c fiber.Ctx, err error) error {
-			code, message := fiber.StatusInternalServerError, "internal server error"
-			var httpErr *fiber.Error
-			if errors.As(err, &httpErr) {
-				code, message = httpErr.Code, httpErr.Message
-			}
-			return c.Status(code).JSON(fiber.Map{"error": message})
-		},
-	})
 	repo := repository.NewEmployeesRepository(pool)
 	scenario := index.NewSingleIndexScenario(repo, logger)
-	rest.NewEmployeeHandler(scenario).RegisterRoutes(app)
 
-	logger.Info("starting reader API", zap.String("address", cfg.ServerAddr))
+	app := fiber.New(fiber.Config{
+		StructValidator: api.NewStructValidator(),
+		ErrorHandler: func(c fiber.Ctx, err error) error {
+			code, message := fiber.StatusInternalServerError, "internal server error"
+			if httpErr, ok := errors.AsType[*fiber.Error](err); ok {
+				code, message = httpErr.Code, httpErr.Message
+			}
+			return c.Status(code).JSON(fiber.Map{
+				"error": message,
+			})
+		},
+	})
+
+	apiGroup := app.Group("/api")
+	rest.NewEmployeeHandler(scenario).RegisterRoutes(apiGroup)
+
 	return app.Listen(cfg.ServerAddr, fiber.ListenConfig{
-		GracefulContext:       ctx,
-		ShutdownTimeout:       35 * time.Second,
-		DisableStartupMessage: true,
+		GracefulContext:   ctx,
+		ShutdownTimeout:   30 * time.Second,
+		EnablePrintRoutes: true,
 	})
 }

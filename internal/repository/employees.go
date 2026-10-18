@@ -29,14 +29,7 @@ func (r *EmployeesRepository) GetEmployeeByID(ctx context.Context, id int64) (do
 	if err != nil {
 		return domain.Employee{}, err
 	}
-	return domain.Employee{
-		ID:        employee.ID,
-		BirthDate: employee.BirthDate.Time,
-		FirstName: employee.FirstName,
-		LastName:  employee.LastName,
-		Gender:    domain.EmployeeGender(employee.Gender),
-		HireDate:  employee.HireDate.Time,
-	}, nil
+	return employeeToDomain(employee), nil
 }
 
 func (r *EmployeesRepository) ExplainGetEmployeeByID(ctx context.Context, id int64) ([]string, error) {
@@ -55,4 +48,15 @@ func (r *EmployeesRepository) ExplainAnalyzeGetEmployeeByID(ctx context.Context,
 		return nil, err
 	}
 	return pgx.CollectRows(rows, pgx.RowTo[string])
+}
+
+func employeeToDomain(employee db.EmployeesEmployee) domain.Employee {
+	return domain.Employee{
+		ID:        employee.ID,
+		BirthDate: employee.BirthDate.Time,
+		FirstName: employee.FirstName,
+		LastName:  employee.LastName,
+		Gender:    domain.EmployeeGender(employee.Gender),
+		HireDate:  employee.HireDate.Time,
+	}
 }

@@ -25,6 +25,14 @@ lego-db:
 	psql -d "$$DATABASE_URL" -f lego.sql
 	rm lego.sql
 
+DOCKER_MIGRATE = docker run --rm --network host -v $(CURDIR)/data/migrations:/migrations migrate/migrate:v4.18.1
+
+migrate-up:
+	$(DOCKER_MIGRATE) -path=/migrations -database '$(DATABASE_URL)' up
+
+migrate-down:
+	$(DOCKER_MIGRATE) -path=/migrations -database '$(DATABASE_URL)' down 1
+
 sqlc-gen:
 	docker run --rm -v $(PWD):/src -w /src sqlc/sqlc:1.31.1 generate
 

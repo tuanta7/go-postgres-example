@@ -11,6 +11,7 @@ const (
 
 // Employee represents an employee independently of database access types.
 // BirthDate and HireDate represent calendar dates without a time of day.
+// When used as search filters, zero-valued fields are omitted.
 type Employee struct {
 	ID        int64
 	BirthDate time.Time

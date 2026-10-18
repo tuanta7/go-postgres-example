@@ -10,6 +10,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
+	"github.com/tuanta7/go-postgres-example/internal/api"
 	"github.com/tuanta7/go-postgres-example/internal/domain"
 	"github.com/tuanta7/go-postgres-example/internal/mocks"
 	"github.com/tuanta7/go-postgres-example/internal/scenarios/index"
@@ -25,7 +26,7 @@ type EmployeeHandlerSuite struct {
 
 func (s *EmployeeHandlerSuite) SetupTest() {
 	s.repo = mocks.NewMockEmployeesRepository(s.T())
-	s.app = fiber.New()
+	s.app = fiber.New(fiber.Config{StructValidator: api.NewStructValidator()})
 	s.requestTimeout = 0
 	s.app.Use(func(c fiber.Ctx) error {
 		if s.requestTimeout > 0 {
