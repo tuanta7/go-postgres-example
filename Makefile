@@ -25,6 +25,10 @@ lego-db:
 	psql -d "$$DATABASE_URL" -f lego.sql
 	rm lego.sql
 
+lego-schema:
+	brew install libpq
+	pg_dump "$$DATABASE_URL" --schema-only --schema=public --no-owner --no-privileges --file=data/schema/lego.sql
+
 DOCKER_MIGRATE = docker run --rm --network host -v $(CURDIR)/data/migrations:/migrations migrate/migrate:v4.18.1
 
 migrate-up:
