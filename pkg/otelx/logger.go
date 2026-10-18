@@ -29,3 +29,9 @@ func NewLogger() *Logger {
 		Logger: logger,
 	}
 }
+
+func NewNopLogger() *Logger {
+	return &Logger{
+		Logger: zap.NewNop(),
+	}
+}

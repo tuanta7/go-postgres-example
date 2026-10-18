@@ -5,6 +5,9 @@ export DATABASE_URL
 
 run-reader:
 	go run ./cmd/reader
+	
+run-tests:
+	go test -v ./internal/...
 
 employees-db:
 	brew install libpq wget
@@ -26,7 +29,7 @@ sqlc-gen:
 	docker run --rm -v $(PWD):/src -w /src sqlc/sqlc:1.31.1 generate
 
 mockery-gen:
-	docker run --rm -e GOTOOLCHAIN=auto -v "$(PWD):/src" -w /src vektra/mockery:v3.7.0 --config .mockery.yml
+	docker run --rm -e GOTOOLCHAIN=auto -v "$(PWD):/src" -w /src vektra/mockery:v3.8.0 --config .mockery.yml
 
 K6_SCENARIO = tests/load/$(SCENARIO).test.js
 

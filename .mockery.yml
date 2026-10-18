@@ -1,0 +1,10 @@
+template: testify
+packages:
+  github.com/tuanta7/go-postgres-example/internal/scenarios/index:
+    config:
+      dir: internal/mocks
+      filename: employees_repository.go
+      pkgname: mocks
+      structname: MockEmployeesRepository
+    interfaces:
+      EmployeesRepository:
